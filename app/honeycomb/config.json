@@ -1,21 +1,61 @@
 {
-    "general":
-    {
+    "general": {
         "serviceProviderNameSpace": "app"
     },
-    "formData":
-    [
+    "formData": {
+        "tracks": "app\\forms\\RadioTracksForm",
+        "playlist": "app\\forms\\RadioPlaylistsForm"
+    },
+    "adminMenu": [
+        {
+            "path": "admin\/tracks",
+            "translation": "tracks.page_title",
+            "icon": "fa-music",
+            "aclPermission": "tracks_list"
+        },
+        {
+            "path": "admin\/playlist",
+            "translation": "playlist.page_title",
+            "icon": "fa-list-ol",
+            "aclPermission": "playlist_list"
+        }
     ],
-    "adminMenu":
-    [
-    ],
-    "acl":
-    {
-        "permissions" :
-        [
+    "acl": {
+        "permissions": [
+            {
+                "name": "admin.tracks",
+                "controller": "app\\http\\controllers\\RadioTracksController",
+                "actions": [
+                    "tracks_list",
+                    "tracks_create",
+                    "tracks_update",
+                    "tracks_delete",
+                    "tracks_force_delete"
+                ]
+            },
+            {
+                "name": "admin.playlist",
+                "controller": "app\\http\\controllers\\RadioPlaylistsController",
+                "actions": [
+                    "playlist_list",
+                    "playlist_create",
+                    "playlist_update",
+                    "playlist_delete",
+                    "playlist_force_delete"
+                ]
+            }
         ],
-        "rolesActions" :
-        [
-        ]
+        "rolesActions": {
+            "project-admin": [
+                "tracks_list",
+                "tracks_create",
+                "tracks_update",
+                "tracks_delete",
+                "playlist_list",
+                "playlist_create",
+                "playlist_update",
+                "playlist_delete"
+            ]
+        }
     }
 }
