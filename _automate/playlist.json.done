@@ -1,0 +1,20 @@
+{
+    "directory":"",
+    "serviceURL":"playlist",
+    "serviceIcon":"fa-list-ol",
+    "serviceName":"RadioPlaylists",
+    "generateMigrations":1,
+    "multiLanguage":0,
+    "database":
+    [
+        {
+            "tableName":"hc_playlists",
+            "modelName":"HCPlaylists",
+            "default":1
+        },
+        {
+            "tableName":"hc_tracks_playlists_connections",
+            "modelName":"HCTracksPlaylistsConnections"
+        }
+    ]
+}

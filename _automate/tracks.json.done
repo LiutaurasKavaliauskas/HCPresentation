@@ -1,0 +1,20 @@
+{
+    "directory":"",
+    "serviceURL":"tracks",
+    "serviceIcon":"fa-music",
+    "serviceName":"RadioTracks",
+    "generateMigrations":1,
+    "multiLanguage":0,
+    "database":
+    [
+        {
+            "tableName":"hc_tracks",
+            "modelName":"HCTracks",
+            "default":1
+        },
+        {
+            "tableName":"hc_track_author_connections",
+            "modelName":"HCTrackAuthorConnections"
+        }
+    ]
+}
