@@ -10,7 +10,44 @@ use app\validators\RadioTracksValidator;
 class RadioTracksController extends HCBaseController
 {
 
-    //TODO recordsPerPage setting
+
+    public function getApiData()
+    {
+        // Create a stream
+        $opts = [
+            "http" => [
+                "method" => "GET",
+                "header" => "Hc-Token: Xxh4HxJxowAapYbq9xBj7XyELjiDUqwOtDpRYAUmHwYQGMgi5q8KDeCOtuwvw8RtDYD5DsSrFbZnLqh1VubiNs4b8MUCCUHTe8REVNo76GbmlJXnD8dKkVVGnqTWXDcgHfSwFWyt82vW9Ibcn2VyV2cZBzzu6jr175f7Ckc8DSTfOF5Cuo7gOSLB7eAgN3ftnVvFrse1GOusglKt0lF7bELradWv21iXnVBW4Mv5UpT04Wj2yKbO59vsxKo8fc5\r\n" .
+                    "Cookie: foo=bar\r\n"
+            ]
+        ];
+
+        $context = stream_context_create($opts);
+
+        // Open the file using the HTTP headers set above
+        $file = file_get_contents('http://88.222.235.130:50/api/v1/songs/', false, $context);
+
+        foreach (json_decode($file)->data as $value) {
+            if (!HCTracks::where('name', $value->name)->get()->toArray())
+                $record = HCTracks::create([
+                    'name' => $value->name
+                ]);
+
+            foreach ($value->artists as $artist) {
+                if (!HCUsers::where('email', $artist->name)->get()->toArray()) {
+                    $user = HCUsers::create([
+                        'email' => $artist->name,
+                        'password' => '',
+                    ]);
+
+                    HCTrackAuthorConnections::create([
+                        'author_id' => $user->id,
+                        'track_id' => $record->id,
+                    ]);
+                }
+            }
+        }
+    }
 
     /**
      * Returning configured admin view
@@ -74,15 +111,13 @@ class RadioTracksController extends HCBaseController
     {
         $data = $this->getInputData();
 
-        
-
         $record = HCTracks::create(array_get($data, 'record'));
 
         foreach (array_get($data, 'record.author') as $author)
-        HCTrackAuthorConnections::create([
-            'author_id' => $author,
-            'track_id' => $record->id,
-        ]);
+            HCTrackAuthorConnections::create([
+                'author_id' => $author,
+                'track_id' => $record->id,
+            ]);
 
 
         return $this->getSingleRecord($record->id);
@@ -161,6 +196,8 @@ class RadioTracksController extends HCBaseController
      */
     public function createQuery(array $select = null)
     {
+        $this->getApiData();
+
         $with = ['author'];
 
         if ($select == null)
