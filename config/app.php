@@ -168,7 +168,7 @@ return [
          */
 
         interactivesolutions\honeycombcms\app\providers\HCCMSServiceProvider::class,
-
+        interactivesolutions\honeycombposts\app\providers\HCPostsServiceProvider::class,
         /*
          * Application Service Providers...
          */
